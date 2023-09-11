@@ -1,0 +1,57 @@
+{
+  "env": {
+    "es6": true
+  },
+  "extends": [
+    "react-app",
+    "eslint:recommended",
+    "prettier",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "plugins": [
+    "react",
+    "@typescript-eslint",
+    "import",
+    "no-relative-import-paths"
+  ],
+  "rules": {
+    "no-var": "error",
+    "no-multiple-empty-lines": "error",
+    "no-console": ["warn", { "allow": ["warn", "error", "info"] }],
+    "eqeqeq": "error",
+    "dot-notation": "error",
+    "no-unused-vars": "error",
+    "@typescript-eslint/no-empty-function": "off",
+    "no-relative-import-paths/no-relative-import-paths": [
+      "error",
+      { "allowSameFolder": true, "rootDir": "src" }
+    ],
+    "import/order": [
+      "error",
+      {
+        "groups": [
+          "builtin",
+          "external",
+          "internal",
+          "parent",
+          "sibling",
+          "index",
+          "object",
+          "type"
+        ],
+        "pathGroups": [
+          { "pattern": "react", "group": "builtin", "position": "after" },
+          { "pattern": "react", "group": "external", "position": "before" },
+          { "pattern": "react-dom", "group": "builtin", "position": "after" }
+        ],
+        "pathGroupsExcludedImportTypes": ["react", "react-dom"],
+        "alphabetize": {
+          "order": "asc",
+          "caseInsensitive": true
+        },
+        "newlines-between": "always"
+      }
+    ]
+  }
+}
