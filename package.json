@@ -23,6 +23,12 @@
     "eject": "react-scripts eject",
     "postinstall": "husky install"
   },
+  "lint-staged": {
+    "./src/**/*.{js,ts,jsx,tsx}": [
+      "eslint",
+      "prettier --write --cache ."
+    ]
+  },
   "eslintConfig": {
     "extends": [
       "react-app",
