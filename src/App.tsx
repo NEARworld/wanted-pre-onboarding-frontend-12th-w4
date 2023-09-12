@@ -14,11 +14,6 @@ const RIGHT_INDICATOR_COUNT = 5000;
 const mock = data.response;
 const mockKeys = Object.keys(data.response) as MockKey[];
 
-const calcChartWidth = () => {
-  const totalGap = BAR_GAP * mockKeys.length - 1;
-  return totalGap + BAR_WIDTH * mockKeys.length;
-};
-
 function App() {
   const { height } = useMemo(() => calcChartHeight(findMaxValueBar()), []);
   const findMaxValueBar = useCallback(() => {
@@ -35,7 +30,10 @@ function App() {
     const chartHeight = RIGHT_INDICATOR_COUNT * Math.floor(times);
     return { times, height: chartHeight / BAR_HEIGHT_RATIO };
   }, []);
-
+  const calcChartWidth = () => {
+    const totalGap = BAR_GAP * mockKeys.length - 1;
+    return totalGap + BAR_WIDTH * mockKeys.length;
+  };
   return (
     <StyledChartContainer className='App'>
       <StyledBarsContainer height={height}>
@@ -43,7 +41,7 @@ function App() {
           <StyledBar key={new Date(value).getTime()} $value_bar={mock[value].value_bar} />
         ))}
       </StyledBarsContainer>
-      <StyledChartBottomBorder />
+      <StyledChartBottomBorder width={calcChartWidth()} />
       <StyledDatesContainer>
         {mockKeys.map((value, idx) => (
           <div>
@@ -66,13 +64,12 @@ const StyledBarsContainer = styled.div<{ height: number }>`
   display: inline-flex;
   gap: ${BAR_GAP}px;
   height: ${props => props.height}px;
-  // height: ${calcChartHeight(findMaxValueBar()).height}px;
   transform: scaleY(-1);
   border-right: 2px black solid;
   border-left: 2px black solid;
 `;
-const StyledChartBottomBorder = styled.div`
-  width: ${calcChartWidth()}px;
+const StyledChartBottomBorder = styled.div<{ width: number }>`
+  width: ${props => props.width}px;
   border: 1px black solid;
 `;
 const StyledBar = styled.div<{ $value_bar: number }>`
