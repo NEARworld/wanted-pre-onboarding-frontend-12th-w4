@@ -7,10 +7,16 @@ import styled from 'styled-components';
 type MockKey = keyof typeof data.response;
 
 const BAR_HEIGHT_RATIO = 50;
-const BAR_WIDTH = '10px';
+const BAR_WIDTH = 10;
+const BAR_GAP = 1;
 
 const mock = data.response;
 const mockKeys = Object.keys(data.response) as MockKey[];
+
+const calcChartWidth = () => {
+  const totalGap = BAR_GAP * mockKeys.length - 1;
+  return totalGap + BAR_WIDTH * mockKeys.length;
+};
 
 function App() {
   const [maxBarValue, setMaxBarValue] = useState(0);
@@ -33,6 +39,15 @@ function App() {
             <StyledBar key={new Date(value).getTime()} $value_bar={mock[value].value_bar} />
           ))}
         </StyledBarsContainer>
+        <StyledChartBottomBorder />
+        <StyledDatesContainer>
+          {mockKeys.map((value, idx) => (
+            <div>
+              {(idx + 1) % 10 ? null : <StyledIndicator />}
+              <StyledDate>{(idx + 1) % 10 ? '' : value.split(' ')[1]}</StyledDate>
+            </div>
+          ))}
+        </StyledDatesContainer>
       </StyledChartContainer>
     );
   return <div>loading...</div>;
@@ -45,17 +60,37 @@ const StyledChartContainer = styled.div`
   align-items: center;
 `;
 const StyledBarsContainer = styled.div`
-  display: flex;
-  gap: 1px;
+  display: inline-flex;
+  gap: ${BAR_GAP}px;
   transform: scaleY(-1);
 `;
+const StyledChartBottomBorder = styled.div`
+  width: ${calcChartWidth()}px;
+  border: 1px black solid;
+`;
 const StyledBar = styled.div<{ $value_bar: number }>`
-  width: ${BAR_WIDTH};
+  width: ${BAR_WIDTH}px;
   height: ${props => `${props.$value_bar / BAR_HEIGHT_RATIO}px`};
   background: dodgerblue;
   &:hover {
     background-color: #005cc5;
   }
+`;
+const StyledDatesContainer = styled.div`
+  display: flex;
+  gap: ${BAR_GAP}px;
+`;
+const StyledIndicator = styled.div`
+  width: 0px;
+  margin: 0 auto;
+  height: ${BAR_WIDTH}px;
+  border: 1px black solid;
+`;
+const StyledDate = styled.span`
+  margin-top: ${BAR_WIDTH}px;
+  width: ${BAR_WIDTH}px;
+  display: flex;
+  justify-content: center;
 `;
 
 export default App;
