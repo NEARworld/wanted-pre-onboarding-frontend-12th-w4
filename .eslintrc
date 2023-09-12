@@ -9,12 +9,7 @@
     "plugin:@typescript-eslint/recommended"
   ],
   "parser": "@typescript-eslint/parser",
-  "plugins": [
-    "react",
-    "@typescript-eslint",
-    "import",
-    "no-relative-import-paths"
-  ],
+  "plugins": ["react", "@typescript-eslint", "import", "no-relative-import-paths"],
   "rules": {
     "no-var": "error",
     "no-multiple-empty-lines": "error",
