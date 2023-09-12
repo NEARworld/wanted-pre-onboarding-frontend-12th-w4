@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React from 'react';
 
 import './App.css';
 import data from 'mock/mock_data.json';
@@ -19,38 +19,24 @@ const calcChartWidth = () => {
 };
 
 function App() {
-  const [maxBarValue, setMaxBarValue] = useState(0);
-
-  const findMaxValue = useCallback((arr: number[]) => {
-    for (const key in mock) arr.push(mock[key as MockKey].value_bar);
-    const sortedArr = arr.sort((a, b) => a - b);
-    return sortedArr[sortedArr.length - 1];
-  }, []);
-
-  useEffect(() => {
-    setMaxBarValue(findMaxValue([]) / BAR_HEIGHT_RATIO);
-  }, []);
-
-  if (maxBarValue)
-    return (
-      <StyledChartContainer className='App'>
-        <StyledBarsContainer>
-          {mockKeys.map(value => (
-            <StyledBar key={new Date(value).getTime()} $value_bar={mock[value].value_bar} />
-          ))}
-        </StyledBarsContainer>
-        <StyledChartBottomBorder />
-        <StyledDatesContainer>
-          {mockKeys.map((value, idx) => (
-            <div>
-              {(idx + 1) % 10 ? null : <StyledIndicator />}
-              <StyledDate>{(idx + 1) % 10 ? '' : value.split(' ')[1]}</StyledDate>
-            </div>
-          ))}
-        </StyledDatesContainer>
-      </StyledChartContainer>
-    );
-  return <div>loading...</div>;
+  return (
+    <StyledChartContainer className='App'>
+      <StyledBarsContainer>
+        {mockKeys.map(value => (
+          <StyledBar key={new Date(value).getTime()} $value_bar={mock[value].value_bar} />
+        ))}
+      </StyledBarsContainer>
+      <StyledChartBottomBorder />
+      <StyledDatesContainer>
+        {mockKeys.map((value, idx) => (
+          <div>
+            {(idx + 1) % 10 ? null : <StyledIndicator />}
+            <StyledDate>{(idx + 1) % 10 ? '' : value.split(' ')[1]}</StyledDate>
+          </div>
+        ))}
+      </StyledDatesContainer>
+    </StyledChartContainer>
+  );
 }
 
 const StyledChartContainer = styled.div`
