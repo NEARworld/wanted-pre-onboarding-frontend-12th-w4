@@ -15,13 +15,6 @@ const mock = data.response;
 const mockKeys = Object.keys(data.response) as MockKey[];
 
 function App() {
-  const { height } = useMemo(() => calcChartHeight(findMaxValueBar()), []);
-  const findMaxValueBar = useCallback(() => {
-    const arr = [];
-    for (const key in mock) arr.push(mock[key as MockKey].value_bar);
-    const sortedArr = arr.sort((a, b) => a - b);
-    return sortedArr[sortedArr.length - 1];
-  }, []);
   const calcChartHeight = useCallback((maxBarHeight: number) => {
     let times = 0;
     if (maxBarHeight % RIGHT_INDICATOR_COUNT > 0) {
@@ -30,10 +23,21 @@ function App() {
     const chartHeight = RIGHT_INDICATOR_COUNT * Math.floor(times);
     return { times, height: chartHeight / BAR_HEIGHT_RATIO };
   }, []);
+
+  const findMaxValueBar = useCallback(() => {
+    const arr = [];
+    for (const key in mock) arr.push(mock[key as MockKey].value_bar);
+    const sortedArr = arr.sort((a, b) => a - b);
+    return sortedArr[sortedArr.length - 1];
+  }, []);
+
+  const { height } = useMemo(() => calcChartHeight(findMaxValueBar()), []);
+
   const calcChartWidth = () => {
     const totalGap = BAR_GAP * mockKeys.length - 1;
     return totalGap + BAR_WIDTH * mockKeys.length;
   };
+
   return (
     <StyledChartContainer className='App'>
       <StyledBarsContainer height={height}>
