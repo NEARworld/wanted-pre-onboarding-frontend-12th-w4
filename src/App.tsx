@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useMemo } from 'react';
 
 import './App.css';
 import data from 'mock/mock_data.json';
@@ -19,26 +19,26 @@ const calcChartWidth = () => {
   return totalGap + BAR_WIDTH * mockKeys.length;
 };
 
-const calcChartHeight = (maxBarHeight: number) => {
-  let times = 0;
-  if (maxBarHeight % RIGHT_INDICATOR_COUNT > 0) {
-    times = maxBarHeight / RIGHT_INDICATOR_COUNT + 1;
-  } else times = maxBarHeight / RIGHT_INDICATOR_COUNT;
-  const chartHeight = RIGHT_INDICATOR_COUNT * Math.floor(times);
-  return chartHeight / BAR_HEIGHT_RATIO;
-};
-
-const findMaxValueBar = () => {
-  const arr = [];
-  for (const key in mock) arr.push(mock[key as MockKey].value_bar);
-  const sortedArr = arr.sort((a, b) => a - b);
-  return sortedArr[sortedArr.length - 1];
-};
-
 function App() {
+  const { height } = useMemo(() => calcChartHeight(findMaxValueBar()), []);
+  const findMaxValueBar = useCallback(() => {
+    const arr = [];
+    for (const key in mock) arr.push(mock[key as MockKey].value_bar);
+    const sortedArr = arr.sort((a, b) => a - b);
+    return sortedArr[sortedArr.length - 1];
+  }, []);
+  const calcChartHeight = useCallback((maxBarHeight: number) => {
+    let times = 0;
+    if (maxBarHeight % RIGHT_INDICATOR_COUNT > 0) {
+      times = maxBarHeight / RIGHT_INDICATOR_COUNT + 1;
+    } else times = maxBarHeight / RIGHT_INDICATOR_COUNT;
+    const chartHeight = RIGHT_INDICATOR_COUNT * Math.floor(times);
+    return { times, height: chartHeight / BAR_HEIGHT_RATIO };
+  }, []);
+
   return (
     <StyledChartContainer className='App'>
-      <StyledBarsContainer>
+      <StyledBarsContainer height={height}>
         {mockKeys.map(value => (
           <StyledBar key={new Date(value).getTime()} $value_bar={mock[value].value_bar} />
         ))}
@@ -62,10 +62,11 @@ const StyledChartContainer = styled.div`
   justify-content: center;
   align-items: center;
 `;
-const StyledBarsContainer = styled.div`
+const StyledBarsContainer = styled.div<{ height: number }>`
   display: inline-flex;
   gap: ${BAR_GAP}px;
-  height: ${calcChartHeight(findMaxValueBar())}px;
+  height: ${props => props.height}px;
+  // height: ${calcChartHeight(findMaxValueBar()).height}px;
   transform: scaleY(-1);
   border-right: 2px black solid;
   border-left: 2px black solid;
