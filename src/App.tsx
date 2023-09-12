@@ -9,6 +9,7 @@ type MockKey = keyof typeof data.response;
 const BAR_HEIGHT_RATIO = 50;
 const BAR_WIDTH = 10;
 const BAR_GAP = 1;
+const RIGHT_INDICATOR_COUNT = 5000;
 
 const mock = data.response;
 const mockKeys = Object.keys(data.response) as MockKey[];
@@ -16,6 +17,22 @@ const mockKeys = Object.keys(data.response) as MockKey[];
 const calcChartWidth = () => {
   const totalGap = BAR_GAP * mockKeys.length - 1;
   return totalGap + BAR_WIDTH * mockKeys.length;
+};
+
+const calcChartHeight = (maxBarHeight: number) => {
+  let times = 0;
+  if (maxBarHeight % RIGHT_INDICATOR_COUNT > 0) {
+    times = maxBarHeight / RIGHT_INDICATOR_COUNT + 1;
+  } else times = maxBarHeight / RIGHT_INDICATOR_COUNT;
+  const chartHeight = RIGHT_INDICATOR_COUNT * Math.floor(times);
+  return chartHeight / BAR_HEIGHT_RATIO;
+};
+
+const findMaxValueBar = () => {
+  const arr = [];
+  for (const key in mock) arr.push(mock[key as MockKey].value_bar);
+  const sortedArr = arr.sort((a, b) => a - b);
+  return sortedArr[sortedArr.length - 1];
 };
 
 function App() {
@@ -48,7 +65,10 @@ const StyledChartContainer = styled.div`
 const StyledBarsContainer = styled.div`
   display: inline-flex;
   gap: ${BAR_GAP}px;
+  height: ${calcChartHeight(findMaxValueBar())}px;
   transform: scaleY(-1);
+  border-right: 2px black solid;
+  border-left: 2px black solid;
 `;
 const StyledChartBottomBorder = styled.div`
   width: ${calcChartWidth()}px;
