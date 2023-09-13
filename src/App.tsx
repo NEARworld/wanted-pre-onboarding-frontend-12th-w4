@@ -31,7 +31,10 @@ function App() {
     return sortedArr[sortedArr.length - 1];
   }, []);
 
-  const { height } = useMemo(() => calcChartHeight(findMaxValueBar()), []);
+  const { times: valueBarIndicatorCount, height } = useMemo(
+    () => calcChartHeight(findMaxValueBar()),
+    [calcChartHeight, findMaxValueBar],
+  );
 
   const calcChartWidth = () => {
     const totalGap = BAR_GAP * mockKeys.length - 1;
@@ -39,22 +42,34 @@ function App() {
   };
 
   return (
-    <StyledChartContainer className='App'>
-      <StyledBarsContainer height={height}>
-        {mockKeys.map(value => (
-          <StyledBar key={new Date(value).getTime()} $value_bar={mock[value].value_bar} />
-        ))}
-      </StyledBarsContainer>
-      <StyledChartBottomBorder width={calcChartWidth()} />
-      <StyledDatesContainer>
-        {mockKeys.map((value, idx) => (
-          <div>
-            {(idx + 1) % 10 ? null : <StyledIndicator />}
-            <StyledDate>{(idx + 1) % 10 ? '' : value.split(' ')[1]}</StyledDate>
-          </div>
-        ))}
-      </StyledDatesContainer>
-    </StyledChartContainer>
+    <div
+      className='App'
+      style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+    >
+      <div style={{ display: 'flex' }}>
+        <StyledChartContainer>
+          <StyledBarsContainer height={height}>
+            {mockKeys.map(value => (
+              <StyledBar key={new Date(value).getTime()} $value_bar={mock[value].value_bar} />
+            ))}
+          </StyledBarsContainer>
+          <StyledChartBottomBorder width={calcChartWidth()} />
+          <StyledDatesContainer>
+            {mockKeys.map((value, idx) => (
+              <div>
+                {(idx + 1) % 10 ? null : <StyledIndicator />}
+                <StyledDate>{(idx + 1) % 10 ? '' : value.split(' ')[1]}</StyledDate>
+              </div>
+            ))}
+          </StyledDatesContainer>
+        </StyledChartContainer>
+        <div style={{ display: 'grid', height }}>
+          {Array.from({ length: valueBarIndicatorCount }).map((_, idx) => (
+            <div style={{}}>{(valueBarIndicatorCount - idx) * RIGHT_INDICATOR_COUNT}</div>
+          ))}
+        </div>
+      </div>
+    </div>
   );
 }
 
