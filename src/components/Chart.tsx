@@ -33,7 +33,7 @@ export const Chart: FC<Props> = ({ data, dates, height }) => {
     <StyledChartContainer>
       <StyledBarsContainer height={height}>
         <StyledAreaChart>
-          {Array.from({ length: 99 }).map((_, index) => (
+          {Array.from({ length: areaPlots.length }).map((_, index) => (
             <StyledArea key={new Date(dates[index]).getTime()} $tuple={areaPlots[index]} />
           ))}
         </StyledAreaChart>
