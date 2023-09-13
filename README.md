@@ -22,6 +22,8 @@ ___
 | :----------: | :-----: |
 |    리액트    | ^18.2.0 |
 | 타입스크립트 | ^4.9.5  |
+| styled-components | ^6.0.7|
+| react-tooltip | ^5.21.3 |
 ___
 ## 4. 배포 및 프리뷰
 https://nimble-madeleine-d9d4d0.netlify.app/
