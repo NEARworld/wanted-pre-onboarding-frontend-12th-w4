@@ -38,12 +38,12 @@ function App() {
     return sortedArr[sortedArr.length - 1];
   }, []);
 
-  const maxValueBar = useMemo(() => findMaxValue('value_bar'), []);
+  const maxValueBar = useMemo(() => findMaxValue('value_bar'), [findMaxValue]);
   // const maxValueArea = useMemo(() => findMaxValue('value_area'), []);
 
   const { times: valueBarIndicatorCount, height } = useMemo(
     () => calcChartHeight(maxValueBar),
-    [calcChartHeight],
+    [calcChartHeight, maxValueBar],
   );
 
   return (

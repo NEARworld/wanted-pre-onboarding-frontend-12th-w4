@@ -30,7 +30,7 @@ export const Chart: FC<Props> = ({ data, dates, height }) => {
         arr.push([data[dates[index]].value_area, data[dates[index + 1]].value_area]);
     });
     return arr;
-  }, []);
+  }, [data, dates]);
 
   return (
     <StyledChartContainer>
