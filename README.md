@@ -94,5 +94,34 @@ import { Tooltip as ReactToolip } from 'react-tooltip';
 ))}
 ```
 ### 3. 필터링 기능 구현
+
+<img width="1244" alt="image" src="https://github.com/NEARworld/wanted-pre-onboarding-frontend-12th-w4/assets/102969108/80392bfa-c08a-44ea-8711-f71b94d9caa5">
+
+```tsx
+//위치: Chart.tsx
+// state
+const [id, setId] = useState('');
+
+// JSX
+<StyledButtonGroup>
+  <button onClick={() => setId('')}>해제</button>
+  {Array.from(mockIdSet).map(id => (
+    <button key={id} onClick={() => setId(id)}>
+      {id}
+    </button>
+  ))}
+</StyledButtonGroup>
+
+// CSS
+const StyledBar = div<{ $isFiltered: boolean; 'data-tooltip-id': string; $value_bar: number }>`
+  width: ${BAR_WIDTH}px;
+  height: ${props => `${props.$value_bar / BAR_HEIGHT_RATIO}px`};
+  background: ${props => (props.$isFiltered ? '#005cc5' : 'dodgerblue')};
+  &:hover {
+    background-color: #005cc5;
+  }
+`;
+```
+
 ___
 ## 4. 배포 및 프리뷰
