@@ -58,13 +58,14 @@ function App() {
   );
 }
 
-const StyledChartContainer = styled.div`
+const { div, span } = styled;
+const StyledChartContainer = div`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 `;
-const StyledBarsContainer = styled.div<{ height: number }>`
+const StyledBarsContainer = div<{ height: number }>`
   display: inline-flex;
   gap: ${BAR_GAP}px;
   height: ${props => props.height}px;
@@ -72,11 +73,11 @@ const StyledBarsContainer = styled.div<{ height: number }>`
   border-right: 2px black solid;
   border-left: 2px black solid;
 `;
-const StyledChartBottomBorder = styled.div<{ width: number }>`
+const StyledChartBottomBorder = div<{ width: number }>`
   width: ${props => props.width}px;
   border: 1px black solid;
 `;
-const StyledBar = styled.div<{ $value_bar: number }>`
+const StyledBar = div<{ $value_bar: number }>`
   width: ${BAR_WIDTH}px;
   height: ${props => `${props.$value_bar / BAR_HEIGHT_RATIO}px`};
   background: dodgerblue;
@@ -84,17 +85,17 @@ const StyledBar = styled.div<{ $value_bar: number }>`
     background-color: #005cc5;
   }
 `;
-const StyledDatesContainer = styled.div`
+const StyledDatesContainer = div`
   display: flex;
   gap: ${BAR_GAP}px;
 `;
-const StyledIndicator = styled.div`
+const StyledIndicator = div`
   width: 0px;
   margin: 0 auto;
   height: ${BAR_WIDTH}px;
   border: 1px black solid;
 `;
-const StyledDate = styled.span`
+const StyledDate = span`
   margin-top: ${BAR_WIDTH}px;
   width: ${BAR_WIDTH}px;
   display: flex;
