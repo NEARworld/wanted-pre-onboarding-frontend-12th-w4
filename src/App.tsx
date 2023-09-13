@@ -16,11 +16,12 @@ const mockKeys = Object.keys(data.response) as MockKey[];
 
 function App() {
   const calcChartHeight = useCallback((maxBarHeight: number) => {
-    let times = 0;
+    let times;
     if (maxBarHeight % RIGHT_INDICATOR_COUNT > 0) {
       times = maxBarHeight / RIGHT_INDICATOR_COUNT + 1;
     } else times = maxBarHeight / RIGHT_INDICATOR_COUNT;
-    const chartHeight = RIGHT_INDICATOR_COUNT * Math.floor(times);
+    times = Math.floor(times);
+    const chartHeight = RIGHT_INDICATOR_COUNT * times;
     return { times, height: chartHeight / BAR_HEIGHT_RATIO };
   }, []);
 
