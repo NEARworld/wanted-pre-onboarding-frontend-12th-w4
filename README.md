@@ -61,9 +61,38 @@ const StyledArea = li<{ $tuple: [number, number] }>`
 `;
 ```
 - [x] ~~Bar 그래프의 기준값은 value_bar 값을 이용해주세요~~
-- [ ] 차트의 Y축에 대략적인 수치를 표현해주세요
+- [x] ~~차트의 Y축에 대략적인 수치를 표현해주세요~~
 - [x] ~~하나의 차트안에 Area 형태의 그래프와 Bar 형태의 그래프가 모두 존재하는 복합 그래프로 만들어주세요~~
 ### 2. 호버 기능 구현
+<img width="1244" alt="image" src="https://github.com/NEARworld/wanted-pre-onboarding-frontend-12th-w4/assets/102969108/7844c674-1644-4e15-92b1-940178eb65ba">
+
+```tsx
+// Chart.tsx
+import { Tooltip as ReactToolip } from 'react-tooltip';
+
+// JSX
+{dates.map(value => (
+  <Fragment key={new Date(value).getTime()}>
+    <StyledBar
+      data-tooltip-id={new Date(value).getTime().toString()}
+      $value_bar={data[value].value_bar}
+    />
+    <ReactToolip
+      id={new Date(value).getTime().toString()}
+      place='right'
+      content={`
+        위치: ${data[value].id} \n
+        area: ${data[value].value_area} \n
+        bar: ${data[value].value_bar} \n
+      `}
+      style={{
+        transform: 'scaleY(-1)',
+        whiteSpace: 'pre-line',
+      }}
+      />
+  </Fragment>
+))}
+```
 ### 3. 필터링 기능 구현
 ___
 ## 4. 배포 및 프리뷰
