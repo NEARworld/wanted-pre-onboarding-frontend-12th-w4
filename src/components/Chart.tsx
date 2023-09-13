@@ -111,6 +111,7 @@ const StyledAreaChart = ul`
   flex-direction: row;
   transform: scaleY(-1);
   padding: 0 5px;
+  pointer-events: none;
 `;
 const StyledArea = li<{ $tuple: [number, number] }>`
   flex-grow: 1;
