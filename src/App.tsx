@@ -1,18 +1,18 @@
 import React, { useCallback, useMemo } from 'react';
 
 import './App.css';
+import { BarValueIndicator } from 'components/BarValueIndicator';
+import { BAR_HEIGHT_RATIO, Chart } from 'components/Chart';
 import data from 'mock/mock_data.json';
 import styled from 'styled-components';
 
-type MockKey = keyof typeof data.response;
+export type Mock = typeof data.response;
+export type MockKey = keyof Mock;
 
-const BAR_HEIGHT_RATIO = 50;
-const BAR_WIDTH = 10;
-const BAR_GAP = 1;
 const RIGHT_INDICATOR_COUNT = 5000;
 
 const mock = data.response;
-const mockKeys = Object.keys(data.response) as MockKey[];
+const dates = Object.keys(data.response) as MockKey[];
 
 function App() {
   const calcChartHeight = useCallback((maxBarHeight: number) => {
@@ -37,85 +37,25 @@ function App() {
     [calcChartHeight, findMaxValueBar],
   );
 
-  const calcChartWidth = () => {
-    const totalGap = BAR_GAP * mockKeys.length - 1;
-    return totalGap + BAR_WIDTH * mockKeys.length;
-  };
-
   return (
     <div
       className='App'
       style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
     >
-      <div style={{ display: 'flex' }}>
-        <StyledChartContainer>
-          <StyledBarsContainer height={height}>
-            {mockKeys.map(value => (
-              <StyledBar key={new Date(value).getTime()} $value_bar={mock[value].value_bar} />
-            ))}
-          </StyledBarsContainer>
-          <StyledChartBottomBorder width={calcChartWidth()} />
-          <StyledDatesContainer>
-            {mockKeys.map((value, idx) => (
-              <div>
-                {(idx + 1) % 10 ? null : <StyledIndicator />}
-                <StyledDate>{(idx + 1) % 10 ? '' : value.split(' ')[1]}</StyledDate>
-              </div>
-            ))}
-          </StyledDatesContainer>
-        </StyledChartContainer>
-        <div style={{ display: 'grid', height }}>
-          {Array.from({ length: valueBarIndicatorCount }).map((_, idx) => (
-            <div style={{}}>{(valueBarIndicatorCount - idx) * RIGHT_INDICATOR_COUNT}</div>
-          ))}
-        </div>
-      </div>
+      <StyledChartLayout>
+        <Chart dates={dates} height={height} data={mock} />
+        <BarValueIndicator
+          height={height}
+          count={RIGHT_INDICATOR_COUNT}
+          valueBarIndicatorCount={valueBarIndicatorCount}
+        />
+      </StyledChartLayout>
     </div>
   );
 }
 
-const { div, span } = styled;
-const StyledChartContainer = div`
+const StyledChartLayout = styled.div`
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`;
-const StyledBarsContainer = div<{ height: number }>`
-  display: inline-flex;
-  gap: ${BAR_GAP}px;
-  height: ${props => props.height}px;
-  transform: scaleY(-1);
-  border-right: 2px black solid;
-  border-left: 2px black solid;
-`;
-const StyledChartBottomBorder = div<{ width: number }>`
-  width: ${props => props.width}px;
-  border: 1px black solid;
-`;
-const StyledBar = div<{ $value_bar: number }>`
-  width: ${BAR_WIDTH}px;
-  height: ${props => `${props.$value_bar / BAR_HEIGHT_RATIO}px`};
-  background: dodgerblue;
-  &:hover {
-    background-color: #005cc5;
-  }
-`;
-const StyledDatesContainer = div`
-  display: flex;
-  gap: ${BAR_GAP}px;
-`;
-const StyledIndicator = div`
-  width: 0px;
-  margin: 0 auto;
-  height: ${BAR_WIDTH}px;
-  border: 1px black solid;
-`;
-const StyledDate = span`
-  margin-top: ${BAR_WIDTH}px;
-  width: ${BAR_WIDTH}px;
-  display: flex;
-  justify-content: center;
 `;
 
 export default App;
