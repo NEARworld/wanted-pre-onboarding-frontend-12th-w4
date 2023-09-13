@@ -1,6 +1,7 @@
-import React, { FC, useMemo } from 'react';
+import React, { FC, Fragment, useMemo } from 'react';
 
 import { Mock, MockKey } from 'App';
+import { Tooltip as ReactToolip } from 'react-tooltip';
 import styled from 'styled-components';
 
 type Props = {
@@ -38,7 +39,25 @@ export const Chart: FC<Props> = ({ data, dates, height }) => {
           ))}
         </StyledAreaChart>
         {dates.map(value => (
-          <StyledBar key={new Date(value).getTime()} $value_bar={data[value].value_bar} />
+          <Fragment key={new Date(value).getTime()}>
+            <StyledBar
+              data-tooltip-id={new Date(value).getTime().toString()}
+              $value_bar={data[value].value_bar}
+            />
+            <ReactToolip
+              id={new Date(value).getTime().toString()}
+              place='right'
+              content={`
+                  위치: ${data[value].id} \n
+                  area: ${data[value].value_area} \n
+                  bar: ${data[value].value_bar} \n
+            `}
+              style={{
+                transform: 'scaleY(-1)',
+                whiteSpace: 'pre-line',
+              }}
+            />
+          </Fragment>
         ))}
       </StyledBarsContainer>
       <StyledChartBottomBorder width={calcChartWidth()} />
@@ -73,7 +92,7 @@ const StyledChartBottomBorder = div<{ width: number }>`
   width: ${props => props.width}px;
   border: 1px black solid;
 `;
-const StyledBar = div<{ $value_bar: number }>`
+const StyledBar = div<{ 'data-tooltip-id': string; $value_bar: number }>`
   width: ${BAR_WIDTH}px;
   height: ${props => `${props.$value_bar / BAR_HEIGHT_RATIO}px`};
   background: dodgerblue;
