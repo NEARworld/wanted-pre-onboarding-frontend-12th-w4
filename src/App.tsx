@@ -14,8 +14,11 @@ type TargetChartName = 'value_bar' | 'value_area';
 const LEFT_INDICATOR_COUNT = 50;
 const RIGHT_INDICATOR_COUNT = 5000;
 
-const mock = data.response;
+export const mock = data.response;
 const dates = Object.keys(data.response) as MockKey[];
+
+const mockIdArr = dates.map(value => mock[value].id);
+export const mockIdSet = new Set(mockIdArr);
 
 function App() {
   const calcChartHeight = useCallback((maxBarHeight: number) => {

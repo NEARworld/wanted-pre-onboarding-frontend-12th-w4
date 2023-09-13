@@ -1,6 +1,6 @@
-import React, { FC, Fragment, useMemo } from 'react';
+import React, { FC, Fragment, useMemo, useState } from 'react';
 
-import { Mock, MockKey } from 'App';
+import { mock, Mock, mockIdSet, MockKey } from 'App';
 import { Tooltip as ReactToolip } from 'react-tooltip';
 import styled from 'styled-components';
 
@@ -16,6 +16,8 @@ export const BAR_HEIGHT_RATIO = 50;
 export const AREA_MAX_HEIGHT = 200;
 
 export const Chart: FC<Props> = ({ data, dates, height }) => {
+  const [id, setId] = useState('');
+
   const calcChartWidth = () => {
     const totalGap = BAR_GAP * dates.length - 1;
     return totalGap + BAR_WIDTH * dates.length;
@@ -32,6 +34,14 @@ export const Chart: FC<Props> = ({ data, dates, height }) => {
 
   return (
     <StyledChartContainer>
+      <StyledButtonGroup>
+        <button onClick={() => setId('')}>해제</button>
+        {Array.from(mockIdSet).map(id => (
+          <button key={id} onClick={() => setId(id)}>
+            {id}
+          </button>
+        ))}
+      </StyledButtonGroup>
       <StyledBarsContainer height={height}>
         <StyledAreaChart>
           {Array.from({ length: areaPlots.length }).map((_, index) => (
@@ -41,6 +51,7 @@ export const Chart: FC<Props> = ({ data, dates, height }) => {
         {dates.map(value => (
           <Fragment key={new Date(value).getTime()}>
             <StyledBar
+              $isFiltered={id === mock[value].id}
               data-tooltip-id={new Date(value).getTime().toString()}
               $value_bar={data[value].value_bar}
             />
@@ -80,6 +91,10 @@ const StyledChartContainer = div`
   justify-content: center;
   align-items: center;
 `;
+const StyledButtonGroup = div`
+    display: flex;
+    gap: 10px;
+`;
 const StyledBarsContainer = div<{ height: number }>`
   display: inline-flex;
   gap: ${BAR_GAP}px;
@@ -92,10 +107,10 @@ const StyledChartBottomBorder = div<{ width: number }>`
   width: ${props => props.width}px;
   border: 1px black solid;
 `;
-const StyledBar = div<{ 'data-tooltip-id': string; $value_bar: number }>`
+const StyledBar = div<{ $isFiltered: boolean; 'data-tooltip-id': string; $value_bar: number }>`
   width: ${BAR_WIDTH}px;
   height: ${props => `${props.$value_bar / BAR_HEIGHT_RATIO}px`};
-  background: dodgerblue;
+  background: ${props => (props.$isFiltered ? '#005cc5' : 'dodgerblue')};
   &:hover {
     background-color: #005cc5;
   }
