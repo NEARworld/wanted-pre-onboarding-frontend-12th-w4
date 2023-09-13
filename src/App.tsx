@@ -1,6 +1,7 @@
 import React, { useCallback, useMemo } from 'react';
 
 import './App.css';
+import { AreaValueIndicator } from 'components/AreaValueIndicator';
 import { BarValueIndicator } from 'components/BarValueIndicator';
 import { BAR_HEIGHT_RATIO, Chart } from 'components/Chart';
 import data from 'mock/mock_data.json';
@@ -8,7 +9,9 @@ import styled from 'styled-components';
 
 export type Mock = typeof data.response;
 export type MockKey = keyof Mock;
+type TargetChartName = 'value_bar' | 'value_area';
 
+const LEFT_INDICATOR_COUNT = 50;
 const RIGHT_INDICATOR_COUNT = 5000;
 
 const mock = data.response;
@@ -25,7 +28,7 @@ function App() {
     return { times, height: chartHeight / BAR_HEIGHT_RATIO };
   }, []);
 
-  const findMaxValue = useCallback((target: 'value_bar' | 'value_area') => {
+  const findMaxValue = useCallback((target: TargetChartName) => {
     const arr = [];
     for (const key in mock) arr.push(mock[key as MockKey][target]);
     const sortedArr = arr.sort((a, b) => a - b);
@@ -46,6 +49,11 @@ function App() {
       style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
     >
       <StyledChartLayout>
+        <AreaValueIndicator
+          height={height}
+          count={LEFT_INDICATOR_COUNT}
+          valueAreaIndicatorCount={valueBarIndicatorCount}
+        />
         <Chart dates={dates} height={height} data={mock} />
         <BarValueIndicator
           height={height}
