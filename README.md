@@ -72,7 +72,8 @@ const StyledArea = li<{ $tuple: [number, number] }>`
 <img width="1244" alt="image" src="https://github.com/NEARworld/wanted-pre-onboarding-frontend-12th-w4/assets/102969108/7844c674-1644-4e15-92b1-940178eb65ba">
 
 ```tsx
-// Chart.tsx
+// 호버 기능 구현 내용
+// 코드 위치: components/Chart.tsx
 import { Tooltip as ReactToolip } from 'react-tooltip';
 
 // JSX
@@ -103,7 +104,8 @@ import { Tooltip as ReactToolip } from 'react-tooltip';
 <img width="1244" alt="image" src="https://github.com/NEARworld/wanted-pre-onboarding-frontend-12th-w4/assets/102969108/80392bfa-c08a-44ea-8711-f71b94d9caa5">
 
 ```tsx
-//위치: Chart.tsx
+// 필터링 기능 구현 내용
+// 코드 위치: components/Chart.tsx
 // state
 const [id, setId] = useState('');
 
