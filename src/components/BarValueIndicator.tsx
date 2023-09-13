@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
 
 type Props = {
-  height: number;
   count: number;
+  height: number;
   valueBarIndicatorCount: number;
 };
 
