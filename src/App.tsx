@@ -25,16 +25,19 @@ function App() {
     return { times, height: chartHeight / BAR_HEIGHT_RATIO };
   }, []);
 
-  const findMaxValueBar = useCallback(() => {
+  const findMaxValue = useCallback((target: 'value_bar' | 'value_area') => {
     const arr = [];
-    for (const key in mock) arr.push(mock[key as MockKey].value_bar);
+    for (const key in mock) arr.push(mock[key as MockKey][target]);
     const sortedArr = arr.sort((a, b) => a - b);
     return sortedArr[sortedArr.length - 1];
   }, []);
 
+  const maxValueBar = useMemo(() => findMaxValue('value_bar'), []);
+  // const maxValueArea = useMemo(() => findMaxValue('value_area'), []);
+
   const { times: valueBarIndicatorCount, height } = useMemo(
-    () => calcChartHeight(findMaxValueBar()),
-    [calcChartHeight, findMaxValueBar],
+    () => calcChartHeight(maxValueBar),
+    [calcChartHeight],
   );
 
   return (
